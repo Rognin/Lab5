@@ -1,0 +1,19 @@
+some commands
+
+понять как вообще делать removelower и не получать concurrentModificationException
+
+boundaries for all the values
+javadoc
+использовать переменную окружения
+почти все обработки ошибок
+
+протестить:
+executeScript
+addifmin
+
+возможно нужен другой компаратор для LabWork/ хоть какой-нибудь для всего остального
+
+ВЫНЕСТИ ВВОД ДАННЫХ ДЛЯ НОВОГО ОБЪЕКТА В ОТДЕЛЬНЫЙ МЕТОД
+
+removelower не работает совсем
+filterlessthandescription возможно работает некорректно
