@@ -4,29 +4,38 @@ import main.Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ExecuteScript extends Command {
+public class ExecuteScript extends CommandWithArgs {
 
+    String args = "";
     String fileName = "";
 
     @Override
     public void onCall(String args) throws IOException {
-        getArgs(args);
-        Scanner sc = new Scanner(new File(fileName));
-        while (sc.hasNext()) {
-            String input = Main.readNextCommand();
-            if (input.equals("exit"))
-                break;
-            if (input.equals(""))
-                continue;
-            Main.executeNextCommand(input);
+        try {
+            getArgs(args);
+            Scanner sc = new Scanner(new File(fileName));
+            while (sc.hasNext()) {
+                String input = sc.nextLine();
+                if (input == null || input.isEmpty()) break;
+                Main.executeNextCommand(input);
+            }
+        }catch (IOException e){
+            System.out.println("this file doesn't exist. if you included the extension please try again without it");
         }
     }
 
     @Override
     public void getArgs(String args) {
-        fileName = args;
+        super.getArgs(args);
+        try {
+            fileName = super.args;
+        }catch (InputMismatchException e){
+            System.out.println("please enter the name of the file without the extension");
+            getArgs(Main.sc.nextLine());
+        }
     }
 
     @Override

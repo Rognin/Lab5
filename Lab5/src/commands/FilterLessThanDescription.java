@@ -5,7 +5,7 @@ import main.Main;
 
 import java.io.IOException;
 
-public class FilterLessThanDescription extends Command{
+public class FilterLessThanDescription extends CommandWithArgs{
 
     String description;
 
@@ -19,7 +19,8 @@ public class FilterLessThanDescription extends Command{
 
     @Override
     public void getArgs(String args) {
-        description = args;
+        super.getArgs(args);
+        description = super.args;
     }
 
     @Override

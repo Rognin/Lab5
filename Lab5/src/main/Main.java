@@ -49,17 +49,19 @@ public class Main {
             }
 //            System.out.println(commandName);
 //            System.out.println(keyWords);
-            if(history.size()>5){
+            if (history.size() > 5) {
                 history.poll();
                 history.add(commandName);
-            }else{
+            } else {
                 history.add(commandName);
             }
             commands.get(commandName).onCall(keyWords);
         } catch (NullPointerException e) {
             System.out.println("There is no such command");
         } catch (IOException e) {
-            System.out.println("An IO exception of some sort occured");
+            System.out.println("you don't have a permission to interact with a file (or an unknown error occurred)");
+        } catch (NoSuchElementException e){
+            System.out.println(":(");
         }
     }
 
@@ -82,7 +84,9 @@ public class Main {
 
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(new File("theSet.csv")));
         BufferedReader br = new BufferedReader(new InputStreamReader(bis));
-        while(true){
+
+        //loadCollection
+        while (true) {
 
             String input = null;
             try {
@@ -91,11 +95,11 @@ public class Main {
                 System.out.println("error 001");
             }
 
-            if(input == null || input.isEmpty())break;
+            if (input == null || input.isEmpty()) break;
             String[] currentInput = input.split(",");
             String[] date = currentInput[4].split("-");
-            LocalDate theDate = LocalDate.of(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]));
-            set.add(new LabWork(Long.parseLong(currentInput[0]), currentInput[1], new Coordinates(Long.parseLong(currentInput[2]), Integer.parseInt(currentInput[3])), theDate, Double.parseDouble(currentInput[5]), currentInput[6], Difficulty.valueOf(currentInput[7]), new Person(currentInput[8], Integer.parseInt(currentInput[9]), Integer.parseInt(currentInput[10]),currentInput[11], Color.valueOf(currentInput[12]))));
+            LocalDate theDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+            set.add(new LabWork(Long.parseLong(currentInput[0]), currentInput[1], new Coordinates(Long.parseLong(currentInput[2]), Integer.parseInt(currentInput[3])), theDate, Double.parseDouble(currentInput[5]), currentInput[6], Difficulty.valueOf(currentInput[7]), new Person(currentInput[8], Integer.parseInt(currentInput[9]), Integer.parseInt(currentInput[10]), currentInput[11], Color.valueOf(currentInput[12]))));
         }
 
         while (sc.hasNext()) {

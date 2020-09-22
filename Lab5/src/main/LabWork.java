@@ -2,7 +2,7 @@ package main;
 
 import java.time.LocalDate;
 
-public class LabWork implements Comparable<LabWork>{
+public class LabWork implements Comparable<LabWork> {
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -11,7 +11,6 @@ public class LabWork implements Comparable<LabWork>{
     private String description; //Длина строки не должна быть больше 843, Поле не может быть null
     private Difficulty difficulty; //Поле не может быть null
     private Person author; //Поле не может быть null
-
 
 
     public LabWork(Long id, String name, Coordinates coordinates, LocalDate creationDate, double minimalPoint, String description, Difficulty difficulty, Person author) {
@@ -26,7 +25,7 @@ public class LabWork implements Comparable<LabWork>{
     }
 
     public LabWork(String name, Coordinates coordinates, double minimalPoint, String description, Difficulty difficulty, Person author) {
-        this.id = (long) Main.getSet().size()+1;
+        this.id = (long) Main.getSet().size() + 1;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = LocalDate.now();
@@ -125,7 +124,16 @@ public class LabWork implements Comparable<LabWork>{
     }
 
     @Override
-    public int compareTo (LabWork lw) {
-        return (int) (this.getMinimalPoint()-lw.getMinimalPoint());
+    public int compareTo(LabWork lw) {
+
+        if (this.getMinimalPoint() == lw.getMinimalPoint()) {
+            return 0;
+        }
+
+        if (this.getMinimalPoint() < lw.getMinimalPoint()) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

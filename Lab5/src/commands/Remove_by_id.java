@@ -3,6 +3,8 @@ package commands;
 import main.LabWork;
 import main.Main;
 
+import java.util.InputMismatchException;
+
 public class Remove_by_id extends Command {
 
     long id;
@@ -12,21 +14,37 @@ public class Remove_by_id extends Command {
 
         getArgs(args);
 
-        for (LabWork lw : Main.getSet()) {
-            if (lw.getId() == id) {
-                Main.getSet().remove(lw);
+        boolean flag = true;
+        while (flag) {
+            flag = false;
+            for (LabWork lw : Main.getSet()) {
+                if (lw.getId() == id) {
+                    Main.getSet().remove(lw);
+                    flag = true;
+                    break;
+                }
             }
         }
+        System.out.println("success");
     }
 
     @Override
     public void getArgs(String args) {
         if (args.equals("")) {
             System.out.println("please enter the id of the element you need to remove");
-            id = Main.sc.nextInt();
-            Main.sc.nextLine();
+            try {
+                id = Integer.parseInt(Main.sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("it looks like what you entered is not an integer. please enter again");
+                getArgs(Main.sc.nextLine());
+            }
         } else {
-            id = Integer.parseInt(args);
+            try {
+                id = Integer.parseInt(args);
+            } catch (NumberFormatException e) {
+                System.out.println("it looks like what you entered is not an integer. please enter again");
+                getArgs(Main.sc.nextLine());
+            }
         }
     }
 
