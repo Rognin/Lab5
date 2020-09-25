@@ -1,7 +1,10 @@
 package main;
 
 public class Coordinates {
+    /**the x coordinate, can't be a null*/
     private Long x; //Поле не может быть null
+
+    /**the y coordinate, can't be a null*/
     private Integer y; //Поле не может быть null
 
     public Coordinates(Long x, Integer y) {

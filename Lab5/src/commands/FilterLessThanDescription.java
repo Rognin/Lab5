@@ -5,8 +5,10 @@ import main.Main;
 
 import java.io.IOException;
 
+/**print all the element with a description value less than the given one*/
 public class FilterLessThanDescription extends CommandWithArgs{
 
+    /**the given description*/
     String description;
 
     @Override

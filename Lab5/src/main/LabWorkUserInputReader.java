@@ -1,9 +1,14 @@
+/**a class used for getting user input for creating a copy of LabWork*/
 package main;
 
 import java.util.InputMismatchException;
 
 public class LabWorkUserInputReader {
 
+    /**
+     * the method used to get user input for creating a copy of LabWork
+     * @return a LabWork with the values entered by a user
+     * */
     public LabWork getUserInput() {
 
         String name = "";

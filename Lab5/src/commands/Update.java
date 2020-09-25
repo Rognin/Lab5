@@ -7,8 +7,10 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 
+/**update the value of the element with the given id*/
 public class Update extends Command {
 
+    /**the given id*/
     long id;
 
     @Override

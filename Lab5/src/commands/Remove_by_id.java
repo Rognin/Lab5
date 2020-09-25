@@ -5,8 +5,10 @@ import main.Main;
 
 import java.util.InputMismatchException;
 
+/**remove an element with the given id from the main collection*/
 public class Remove_by_id extends Command {
 
+    /**the given id*/
     long id;
 
     @Override

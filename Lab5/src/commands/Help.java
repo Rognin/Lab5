@@ -2,8 +2,10 @@ package commands;
 
 import main.Main;
 
+/**print helpful information about the commands*/
 public class Help extends Command {
 
+	/**the name of a specific command that the information will be printed about, currently prints nothing*/
 	String keyWord;
 
 	public void onCall(String args) {

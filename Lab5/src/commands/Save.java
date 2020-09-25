@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**save the collection to a file*/
 public class Save extends Command {
     @Override
     public void onCall(String args) throws IOException {

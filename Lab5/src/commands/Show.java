@@ -5,6 +5,7 @@ import main.*;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**list all the elements of the main collection*/
 public class Show extends Command {
     @Override
     public void onCall(String args) {

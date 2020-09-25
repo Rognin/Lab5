@@ -4,6 +4,7 @@ import main.*;
 
 import java.io.IOException;
 
+/**remove all elements with a value less than that of the given one*/
 public class RemoveLower extends Command {
     @Override
     public void onCall(String args) throws IOException {
