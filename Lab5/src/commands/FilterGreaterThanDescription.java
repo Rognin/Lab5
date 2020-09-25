@@ -5,7 +5,10 @@ import main.Main;
 
 import java.io.IOException;
 
+/**print all the element with a description value greater than the given one*/
 public class FilterGreaterThanDescription extends CommandWithArgs{
+
+    /**the given description*/
     String description;
 
     @Override

@@ -5,6 +5,7 @@ import main.Main;
 
 import java.io.IOException;
 
+/**print the information about the element in the main collection with the greatest id value*/
 public class MaxById extends Command {
     @Override
     public void onCall(String args) throws IOException {

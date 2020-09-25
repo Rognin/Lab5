@@ -1,3 +1,9 @@
+/**
+ * The main class, launches the program
+ *
+ * @author Artem Gusev
+ * @version 1.0
+ */
 package main;
 
 import java.io.*;
@@ -7,31 +13,31 @@ import java.util.*;
 import commands.*;
 
 public class Main {
-
+    /** a queue for keeping track of command history */
     public static Queue<String> history = new ArrayDeque<>();
 
+    /** the main collection with Labworks */
     static HashSet<LabWork> set = new HashSet<LabWork>();
-    public static Date date = new Date();
 
-//    static HashMap<Integer, LabWork> map = new HashMap<Integer, LabWork>();
+    /** the date of last collection initialization*/
+    public static Date date = new Date();
 
     public static HashSet<LabWork> getSet() {
         return set;
     }
 
-//    public static HashMap<Integer, LabWork> getMap() {
-//        return map;
-//    }
-
     public static Scanner sc = new Scanner(System.in);
 
-    // a map containing commands
+    /**a map that contains a copy of each command*/
     public static HashMap<String, Command> commands = new HashMap<String, Command>();
 
+    /**a method for reading the next command*/
     public static String readNextCommand() {
         return sc.nextLine();
     }
 
+    /**a method that executes a command
+     * @param s the name of the command*/
     public static void executeNextCommand(String s) throws NullPointerException {
         try {
             int index = s.indexOf(' ');
@@ -60,7 +66,7 @@ public class Main {
             System.out.println("There is no such command");
         } catch (IOException e) {
             System.out.println("you don't have a permission to interact with a file (or an unknown error occurred)");
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             System.out.println(":(");
         }
     }
@@ -82,7 +88,16 @@ public class Main {
         commands.put("filter_less_than_description", new FilterLessThanDescription());
         commands.put("filter_greater_than_description", new FilterGreaterThanDescription());
 
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(new File("theSet.csv")));
+        String fileName = System.getenv("SET_PATH");
+        if (fileName == null) {
+            System.out.println("an environment variable SET_PATH was expected");
+            fileName = "theSet.csv";
+            System.out.println("the file name has been set to the default");
+        }
+
+        /**a BufferedInputStream for reading the collection info from it's file*/
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(new File(fileName)));
+
         BufferedReader br = new BufferedReader(new InputStreamReader(bis));
 
         //loadCollection

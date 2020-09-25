@@ -4,6 +4,7 @@ import main.*;
 
 import java.io.IOException;
 
+/**add an element to the collection if it's the smallest one*/
 public class AddIfMin extends Command {
     @Override
     public void onCall(String args) throws IOException {

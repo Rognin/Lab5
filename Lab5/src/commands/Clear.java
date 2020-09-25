@@ -2,6 +2,7 @@ package commands;
 
 import main.Main;
 
+/**clear the collection*/
 public class Clear extends Command {
     @Override
     public void onCall(String args) {

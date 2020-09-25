@@ -3,14 +3,22 @@ package main;
 import java.time.LocalDate;
 
 public class LabWork implements Comparable<LabWork> {
-    private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; //Поле не может быть null
-    private java.time.LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private double minimalPoint; //Значение поля должно быть больше 0
-    private String description; //Длина строки не должна быть больше 843, Поле не может быть null
-    private Difficulty difficulty; //Поле не может быть null
-    private Person author; //Поле не может быть null
+    /**can't be a null, must be greater than 0, is unique and automatically generated*/
+    private Long id;
+    /**can't be a null, can't be empty*/
+    private String name;
+    /**can't be a null*/
+    private Coordinates coordinates;
+    /**can't be a null, is automatically generated*/
+    private java.time.LocalDate creationDate;
+    /**must be greater than 0*/
+    private double minimalPoint;
+    /**can't be a null, must be shorter than 843*/
+    private String description;
+    /**can't be a null*/
+    private Difficulty difficulty;
+    /**can't be a null*/
+    private Person author;
 
 
     public LabWork(Long id, String name, Coordinates coordinates, LocalDate creationDate, double minimalPoint, String description, Difficulty difficulty, Person author) {
@@ -123,6 +131,7 @@ public class LabWork implements Comparable<LabWork> {
                 "}";
     }
 
+    /**a comparator based on the MinimalPoint value*/
     @Override
     public int compareTo(LabWork lw) {
 

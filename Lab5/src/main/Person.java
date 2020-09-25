@@ -1,11 +1,15 @@
 package main;
 public class Person {
-	private String name; // Поле не может быть null, Строка не может быть пустой
-	private int height; // Значение поля должно быть больше 0
-	private long weight; // Поле не может быть null, Значение поля должно быть больше 0
-	private String passportID; // Значение этого поля должно быть уникальным, Длина строки не должна быть
-								// больше 29, Поле не может быть null
-	private Color eyeColor; // Поле может быть null
+	/**can't be a null, can't be empty*/
+	private String name;
+	/**must be greater than 0*/
+	private int height;
+	/**can't be a null, must be greater than 0*/
+	private long weight;
+	/**can't be a null*/
+	private String passportID;
+	/**can't be a null*/
+	private Color eyeColor;
 
 	public Person(String name, int height, long weight, String passportID, Color eyeColor) {
 		super();

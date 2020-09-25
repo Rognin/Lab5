@@ -7,9 +7,13 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**execute a script from a file*/
 public class ExecuteScript extends CommandWithArgs {
 
+    /**the parameter*/
     String args = "";
+
+    /**the name of the file with a script*/
     String fileName = "";
 
     @Override

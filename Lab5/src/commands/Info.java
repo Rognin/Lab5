@@ -4,6 +4,7 @@ import main.*;
 
 import java.util.HashSet;
 
+/**print information about the main collection*/
 public class Info extends Command{
     @Override
     public void onCall(String args) {

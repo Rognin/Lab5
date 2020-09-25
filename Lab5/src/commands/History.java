@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**print the last 6 commands entered*/
 public class History extends Command {
     @Override
     public void onCall(String args) throws IOException {
