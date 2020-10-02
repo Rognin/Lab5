@@ -1,7 +1,6 @@
 /**a class created for testing purposes*/
 package main;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Test {

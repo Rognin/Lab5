@@ -3,3 +3,5 @@
 filterlessthandescription возможно работает некорректно (greater тоже) - в зависимости от того, как сравниваются строки
 
 можно в remove_by_id добавить предупреждение если ввели несуществующий id
+
+the entire save load system is just wrong
