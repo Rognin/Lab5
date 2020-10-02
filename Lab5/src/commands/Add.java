@@ -2,8 +2,6 @@ package commands;
 
 import main.*;
 
-import java.time.LocalDate;
-
 /**add an element to the collection*/
 public class Add extends Command{
     @Override
