@@ -1,6 +1,8 @@
 package main;
 
-public enum Difficulty {
+import java.io.Serializable;
+
+public enum Difficulty implements Serializable {
     VERY_EASY,
     HARD,
     VERY_HARD,

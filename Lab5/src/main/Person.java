@@ -1,5 +1,8 @@
 package main;
-public class Person {
+
+import java.io.Serializable;
+
+public class Person implements Serializable {
 	/**can't be a null, can't be empty*/
 	private String name;
 	/**must be greater than 0*/

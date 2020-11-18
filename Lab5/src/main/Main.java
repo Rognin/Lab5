@@ -6,19 +6,23 @@
  */
 package main;
 
+import java.net.*;
 import java.io.*;
-import java.time.LocalDate;
+import java.nio.channels.SocketChannel;
 import java.util.*;
 
-import commands.*;
+import Commands.*;
 
 public class Main {
 
-    /**
-     * the name of the save-load file
-     */
-    public static String fileName = "";
-    public static File inputFile;
+    public static Object additionalOutputToServer = null;
+
+    private static Socket socket = null;
+    private static BufferedReader input = null;
+    private static ObjectInputStream in = null;
+    private static ObjectOutputStream out = null;
+    private static SocketChannel sc;
+//    private static BufferedWriter bw = null;
 
     /**
      * a queue for keeping track of command history
@@ -26,84 +30,79 @@ public class Main {
     public static Queue<String> history = new ArrayDeque<>();
 
     /**
-     * the main collection with Labworks
-     */
-    static HashSet<LabWork> set = new HashSet<LabWork>();
-
-    /**
      * the date of last collection initialization
      */
     public static Date date = new Date();
 
-    public static HashSet<LabWork> getSet() {
-        return set;
-    }
-
-    public static Scanner sc = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     /**
      * a map that contains a copy of each command
      */
     public static HashMap<String, Command> commands = new HashMap<String, Command>();
-
-    /**
-     * a method for getting the extension of a file from it's name
-     *
-     * @param fileName
-     * @return extension
-     */
-    public static String getFileExtensionFromName(String fileName) {
-        // если в имени файла есть точка и она не является первым символом в названии файла
-        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-            // то вырезаем все знаки после последней точки в названии файла, то есть ХХХХХ.txt -> txt
-            return fileName.substring(fileName.lastIndexOf(".") + 1);
-            // в противном случае возвращаем заглушку, то есть расширение не найдено
-        else return "";
-    }
-
-    /**
-     * a method for reading the next command
-     */
-    public static String readNextCommand() {
-        return sc.nextLine();
-    }
+    public static HashMap<String, Command> serverCommands = new HashMap<String, Command>();
 
     /**
      * a method that executes a command
      *
      * @param s the name of the command
      */
-    public static void executeNextCommand(String s) throws NullPointerException {
+    public static Command executeNextCommand(String s) throws NullPointerException, NoSuchElementException {
+
+        int index = s.indexOf(' ');
+
+        String commandName;
+        String keyWords;
+
+        if (index > -1) {
+            commandName = s.substring(0, index);
+            keyWords = s.substring(index + 1);
+        } else {
+            commandName = s;
+            keyWords = "";
+        }
         try {
-            int index = s.indexOf(' ');
-//            System.out.println(index);
 
-            String commandName;
-            String keyWords;
-
-            if (index > -1) {
-                commandName = s.substring(0, index);
-                keyWords = s.substring(index + 1);
-            } else {
-                commandName = s;
-                keyWords = "";
-            }
-//            System.out.println(commandName);
-//            System.out.println(keyWords);
             if (history.size() > 5) {
                 history.poll();
-                history.add(commandName);
-            } else {
-                history.add(commandName);
             }
+            history.add(commandName);
             commands.get(commandName).onCall(keyWords);
+
         } catch (NullPointerException e) {
             System.out.println("There is no such command");
+            return null;
         } catch (IOException e) {
             System.out.println("we don't have a permission to interact with a file (or an unknown error occurred)");
-        } catch (NoSuchElementException e) {
-            System.out.println(":(");
+            return null;
         }
+        return (serverCommands.get(commandName));
+    }
+
+    public static boolean tryToConnect() {
+        try {
+            socket = new Socket("127.0.0.1", 5000);
+//            InetSocketAddress isa = new InetSocketAddress("127.0.0.1", 5000);
+            System.out.println("Connected");
+            // sends output to the socket
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+//            sc = SocketChannel.open();
+//            sc.connect(isa);
+        } catch (UnknownHostException u) {
+            System.out.println("unknown host exception");
+            return false;
+        } catch (ConnectException e) {
+            System.out.println("Server is unavailable. Try again by entering 'connect'");
+            return false;
+        }catch(SocketException e){
+            System.out.println("socketex");
+        } catch (IOException i) {
+            System.out.println("io exception");
+            i.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) throws IOException {
@@ -114,7 +113,6 @@ public class Main {
         commands.put("update", new Update());
         commands.put("remove_by_id", new Remove_by_id());
         commands.put("clear", new Clear());
-        commands.put("save", new Save());
         commands.put("execute_script", new ExecuteScript());
         commands.put("add_if_min", new AddIfMin());
         commands.put("remove_lower", new RemoveLower());
@@ -123,80 +121,96 @@ public class Main {
         commands.put("filter_less_than_description", new FilterLessThanDescription());
         commands.put("filter_greater_than_description", new FilterGreaterThanDescription());
 
-        fileName = System.getenv("SET_PATH");
-        if (fileName == null) {
-            System.out.println("an environment variable SET_PATH was expected");
-            fileName = "theSet.csv";
-            System.out.println("the file name has been set to the default (theSet.csv)");
-        }
+        serverCommands.put("help", new Help_server());
+        serverCommands.put("info", new Info_server());
+        serverCommands.put("show", new Show_server());
+        serverCommands.put("add", new Add_server());
+        serverCommands.put("update", new Update_server());
+        serverCommands.put("remove_by_id", new Remove_by_id_server());
+        serverCommands.put("clear", new Clear_server());
+        serverCommands.put("save", new Save_server());
+        serverCommands.put("execute_script", new ExecuteScript_server());
+        serverCommands.put("add_if_min", new AddIfMin_server());
+        serverCommands.put("remove_lower", new RemoveLower_server());
+        serverCommands.put("history", new History_server());
+        serverCommands.put("max_by_id", new MaxById_server());
+        serverCommands.put("filter_less_than_description", new FilterLessThanDescription_server());
+        serverCommands.put("filter_greater_than_description", new FilterGreaterThanDescription_server());
 
-        boolean load = true;
-        boolean isCsv = true;
+        // takes input from terminal
+        input = new BufferedReader(new InputStreamReader(System.in));
 
-        if (!getFileExtensionFromName(fileName).equals("csv")) {
-            System.out.println("the file specified in the SET_PATH environment variable is not .csv (nothing was loaded)");
-            load = false;
-            isCsv = false;
-        }
+        boolean isConnected = tryToConnect();
 
-        if (!isCsv) {
-            fileName += ".csv";
-            System.out.println("we will try to create a save-load file named " + fileName);
-            inputFile = new File(fileName);
+        String line = "";
+
+        while (true) {
+            line = "";
+            if (input.ready()) {
+                try {
+                    line = input.readLine();
+                } catch (IOException e) {
+                    System.out.println("io exception while trying to read something from input");
+                    e.printStackTrace();
+                    break;
+                }
+            }
             try {
-                inputFile.createNewFile();
-                System.out.println("success");
-            } catch (IOException e) {
-                System.out.println("looks like we can't create the file");
-                load = false;
-            }
-            System.out.println("please change the SET_PATH environment variable to " + fileName);
-        } else {
-            inputFile = new File(fileName);
-            if (!inputFile.exists()) {
                 try {
-                    inputFile.createNewFile();
-                    System.out.println("there was no file by the name specified in the SET_PATH environment variable so we created a new one");
-                } catch (IOException e) {
-                    System.out.println("the file specified in the SET_PATH environment variable doesn't exist and we can't create a new one");
-                    load = false;
-                }
-            }
-        }
-
-        /**a BufferedInputStream for reading the collection info from it's file*/
-
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(bis));
-
-        //loadCollection
-        if (load) {
-            while (true) {
-
-                String input = null;
-                try {
-                    input = br.readLine();
-                } catch (IOException e) {
-                    System.out.println("error 001");
+                    if (line.equals("exit"))
+                        break;
+                    if (line.equals("connect")) {
+                        isConnected = tryToConnect();
+                        continue;
+                    }
+                    if (line.equals(""))
+                        continue;
+                    if (!isConnected) continue;
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
 
-                if (input == null || input.isEmpty()) break;
-                String[] currentInput = input.split(",");
-                String[] date = currentInput[4].split("-");
-                LocalDate theDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
-                set.add(new LabWork(Long.parseLong(currentInput[0]), currentInput[1], new Coordinates(Long.parseLong(currentInput[2]), Integer.parseInt(currentInput[3])), theDate, Double.parseDouble(currentInput[5]), currentInput[6], Difficulty.valueOf(currentInput[7]), new Person(currentInput[8], Integer.parseInt(currentInput[9]), Integer.parseInt(currentInput[10]), currentInput[11], Color.valueOf(currentInput[12]))));
-            }
-        }
+                Command currentCommand = executeNextCommand(line);
+//                System.out.println("command executed");
 
-        while (sc.hasNext()) {
-            String input = readNextCommand();
-            if (input.equals("exit"))
+                if (currentCommand == null) {
+                    additionalOutputToServer = null;
+                    continue;
+                }
+
+                out.writeObject(currentCommand);
+                out.writeObject(additionalOutputToServer);
+                additionalOutputToServer = null;
+                out.flush();
+//                System.out.println("sent command to server");
+                String answer = in.readUTF();
+//                System.out.println("answer received");
+                System.out.println(answer);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
                 break;
-            if (input.equals(""))
+            } catch (SocketException e) {
+                System.out.println("server is down. You can try to connect again by entering 'connect'");
+                isConnected = false;
                 continue;
-            executeNextCommand(input);
+            } catch (EOFException e) {
+                System.out.println(e);
+                e.printStackTrace();
+                break;
+            } catch (NoSuchElementException e) {
+                System.out.println(":(");
+                break;
+            }
         }
+        // close the connection
+        try {
+            input.close();
+            out.close();
+            socket.close();
+        } catch (IOException i) {
+            System.out.println("failed to close something");
+        }
+
     }
 
 }

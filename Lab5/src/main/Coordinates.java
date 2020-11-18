@@ -1,6 +1,8 @@
 package main;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     /**the x coordinate, can't be a null*/
     private Long x; //Поле не может быть null
 

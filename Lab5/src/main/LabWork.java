@@ -1,8 +1,12 @@
 package main;
 
-import java.time.LocalDate;
+import server.ServerTCP;
 
-public class LabWork implements Comparable<LabWork> {
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+
+public class LabWork implements Comparable<LabWork>, Serializable {
     /**can't be a null, must be greater than 0, is unique and automatically generated*/
     private Long id;
     /**can't be a null, can't be empty*/
@@ -33,7 +37,7 @@ public class LabWork implements Comparable<LabWork> {
     }
 
     public LabWork(String name, Coordinates coordinates, double minimalPoint, String description, Difficulty difficulty, Person author) {
-        this.id = (long) Main.getSet().size() + 1;
+        this.id = (long) ServerTCP.getNumerOfElements() + 1;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = LocalDate.now();

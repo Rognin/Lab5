@@ -14,7 +14,7 @@ public class LabWorkUserInputReader {
         String name = "";
         while(true) {
             System.out.println("enter the name:");
-            name = Main.sc.nextLine();
+            name = Main.scanner.nextLine();
             if (name == null || name.isEmpty()) {
                 System.out.println("the name can't be blank");
                 continue;
@@ -27,13 +27,13 @@ public class LabWorkUserInputReader {
         while (true) {
             System.out.println("enter the x coordinate:");
             try {
-                x = Main.sc.nextLong();
+                x = Main.scanner.nextLong();
             }catch (InputMismatchException e){
-                Main.sc.nextLine();
+                Main.scanner.nextLine();
                 System.out.println("it looks like what you entered is not an integer");
                 continue;
             }
-            Main.sc.nextLine();
+            Main.scanner.nextLine();
             break;
         }
 
@@ -41,13 +41,13 @@ public class LabWorkUserInputReader {
         while(true) {
             System.out.println("enter the y coordinate:");
             try {
-                y = Main.sc.nextInt();
+                y = Main.scanner.nextInt();
             } catch (InputMismatchException e) {
-                Main.sc.nextLine();
+                Main.scanner.nextLine();
                 System.out.println("it looks like what you entered is not an integer");
                 continue;
             }
-            Main.sc.nextLine();
+            Main.scanner.nextLine();
             break;
         }
 
@@ -57,13 +57,13 @@ public class LabWorkUserInputReader {
         while(true) {
             System.out.println("enter the minimal point:");
             try {
-                minimalPoint = Main.sc.nextDouble();
+                minimalPoint = Main.scanner.nextDouble();
             }catch(InputMismatchException e){
-                Main.sc.nextLine();
+                Main.scanner.nextLine();
                 System.out.println("it looks like what you entered is not a number");
                 continue;
             }
-            Main.sc.nextLine();
+            Main.scanner.nextLine();
             if(minimalPoint>0){
                 break;
             }else{
@@ -75,7 +75,7 @@ public class LabWorkUserInputReader {
         String description = "";
         while(true) {
             System.out.println("enter the description:");
-            description = Main.sc.nextLine();
+            description = Main.scanner.nextLine();
             if(description==null){
                 System.out.println("somehow the description is null, try again");
                 continue;
@@ -93,7 +93,7 @@ public class LabWorkUserInputReader {
         while(true) {
             System.out.println("enter the difficulty (VERY_EASY, HARD, VERY_HARD, IMPOSSIBLE, HOPELESS):");
             try {
-                difficulty = Difficulty.valueOf(Main.sc.nextLine());
+                difficulty = Difficulty.valueOf(Main.scanner.nextLine());
             }catch(IllegalArgumentException e){
                 System.out.println("you can only choose one of the given options");
                 continue;
@@ -104,7 +104,7 @@ public class LabWorkUserInputReader {
         String authorName = "";
         while(true) {
             System.out.println("enter the name of the author:");
-            authorName = Main.sc.nextLine();
+            authorName = Main.scanner.nextLine();
             if (authorName == null || authorName.isEmpty()) {
                 System.out.println("the name of the author can't be blank");
                 continue;
@@ -117,13 +117,13 @@ public class LabWorkUserInputReader {
         while(true) {
             System.out.println("enter the height of the author:");
             try {
-                authorHeight = Main.sc.nextInt();
+                authorHeight = Main.scanner.nextInt();
             }catch(InputMismatchException e){
-                Main.sc.nextLine();
+                Main.scanner.nextLine();
                 System.out.println("it looks like what you entered is not an integer");
                 continue;
             }
-            Main.sc.nextLine();
+            Main.scanner.nextLine();
             if(authorHeight>0){
                 break;
             }else{
@@ -136,13 +136,13 @@ public class LabWorkUserInputReader {
         while(true) {
             System.out.println("enter the weight of the author:");
             try {
-                authorWeight = Main.sc.nextLong();
+                authorWeight = Main.scanner.nextLong();
             }catch(InputMismatchException e){
-                Main.sc.nextLine();
+                Main.scanner.nextLine();
                 System.out.println("it looks like what you entered is not an integer");
                 continue;
             }
-            Main.sc.nextLine();
+            Main.scanner.nextLine();
             if(authorWeight>0){
                 break;
             }else{
@@ -154,7 +154,7 @@ public class LabWorkUserInputReader {
         String authorPassportId = "";
         while(true) {
             System.out.println("enter the passport id of the author:");
-            authorPassportId = Main.sc.nextLine();
+            authorPassportId = Main.scanner.nextLine();
             if(authorPassportId==null){
                 System.out.println("somehow the passport id is null, try again");
                 continue;
@@ -167,7 +167,7 @@ public class LabWorkUserInputReader {
         while (true) {
             System.out.println("enter the eye color of the author (GREEN, RED, BLACK, ORANGE, BROWN):");
             try {
-                eyeColor = Color.valueOf(Main.sc.nextLine());
+                eyeColor = Color.valueOf(Main.scanner.nextLine());
             }catch (IllegalArgumentException e){
                 System.out.println("you can only choose one of the given options");
                 continue;
